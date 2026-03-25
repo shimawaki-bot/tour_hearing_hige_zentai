@@ -1,0 +1,47 @@
+ツアー前ヒアリング（髭全体）に新しい回答が届きました。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+回答者名: <%= @survey.respondent_name %>
+回答日時: <%= @survey.created_at.strftime("%Y年%m月%d日 %H:%M") %>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+【Q1】今の身体の状態で、共有しておきたいことはありますか？
+<% if @survey.q1.any? %>
+<% @survey.q1.each do |item| %>
+  ・<%= item %>
+<% end %>
+<% if @survey.q1.include?("その他") && @survey.q1_other.present? %>
+  （その他詳細）<%= @survey.q1_other %>
+<% end %>
+<% else %>
+  （未回答）
+<% end %>
+
+【Q2】今回のツアー中、より良い状態で過ごすために大切にしたいことはありますか？
+<% if @survey.q2.any? %>
+<% @survey.q2.each do |item| %>
+  ・<%= item %>
+<% end %>
+<% if @survey.q2.include?("その他") && @survey.q2_other.present? %>
+  （その他詳細）<%= @survey.q2_other %>
+<% end %>
+<% else %>
+  （未回答）
+<% end %>
+
+【Q3】本番に向けて、特に良い状態にしておきたい部位はありますか？
+<% if @survey.q3.any? %>
+<% @survey.q3.each do |item| %>
+  ・<%= item %>
+<% end %>
+<% if @survey.q3.include?("その他") && @survey.q3_other.present? %>
+  （その他詳細）<%= @survey.q3_other %>
+<% end %>
+<% else %>
+  （未回答）
+<% end %>
+
+【Q4】フィジカル面で、サポートしてほしいことがあれば教えてください。
+<%= @survey.q4.present? ? @survey.q4 : "（未回答）" %>
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━

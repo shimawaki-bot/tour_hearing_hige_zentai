@@ -1,0 +1,73 @@
+<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+  <h2 style="color: #2d5a3d; border-bottom: 2px solid #2d5a3d; padding-bottom: 8px;">
+    ツアー前ヒアリング（髭全体）新着回答
+  </h2>
+
+  <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+    <tr>
+      <td style="padding: 8px; background: #f5f5f5; font-weight: bold; width: 120px;">回答者名</td>
+      <td style="padding: 8px;"><%= @survey.respondent_name %></td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; background: #f5f5f5; font-weight: bold;">回答日時</td>
+      <td style="padding: 8px;"><%= @survey.created_at.strftime("%Y年%m月%d日 %H:%M") %></td>
+    </tr>
+  </table>
+
+  <div style="margin-bottom: 20px;">
+    <h3 style="color: #2d5a3d; font-size: 14px;">Q1. 今の身体の状態で、共有しておきたいことはありますか？</h3>
+    <% if @survey.q1.any? %>
+      <ul style="margin: 0; padding-left: 20px;">
+        <% @survey.q1.each do |item| %>
+          <li><%= item %></li>
+        <% end %>
+      </ul>
+      <% if @survey.q1.include?("その他") && @survey.q1_other.present? %>
+        <p style="margin: 4px 0 0 20px; color: #555;">（その他詳細）<%= @survey.q1_other %></p>
+      <% end %>
+    <% else %>
+      <p style="color: #999;">未回答</p>
+    <% end %>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <h3 style="color: #2d5a3d; font-size: 14px;">Q2. 今回のツアー中、より良い状態で過ごすために大切にしたいことはありますか？</h3>
+    <% if @survey.q2.any? %>
+      <ul style="margin: 0; padding-left: 20px;">
+        <% @survey.q2.each do |item| %>
+          <li><%= item %></li>
+        <% end %>
+      </ul>
+      <% if @survey.q2.include?("その他") && @survey.q2_other.present? %>
+        <p style="margin: 4px 0 0 20px; color: #555;">（その他詳細）<%= @survey.q2_other %></p>
+      <% end %>
+    <% else %>
+      <p style="color: #999;">未回答</p>
+    <% end %>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <h3 style="color: #2d5a3d; font-size: 14px;">Q3. 本番に向けて、特に良い状態にしておきたい部位はありますか？</h3>
+    <% if @survey.q3.any? %>
+      <ul style="margin: 0; padding-left: 20px;">
+        <% @survey.q3.each do |item| %>
+          <li><%= item %></li>
+        <% end %>
+      </ul>
+      <% if @survey.q3.include?("その他") && @survey.q3_other.present? %>
+        <p style="margin: 4px 0 0 20px; color: #555;">（その他詳細）<%= @survey.q3_other %></p>
+      <% end %>
+    <% else %>
+      <p style="color: #999;">未回答</p>
+    <% end %>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <h3 style="color: #2d5a3d; font-size: 14px;">Q4. フィジカル面で、サポートしてほしいことがあれば教えてください。</h3>
+    <% if @survey.q4.present? %>
+      <p style="white-space: pre-wrap;"><%= @survey.q4 %></p>
+    <% else %>
+      <p style="color: #999;">未回答</p>
+    <% end %>
+  </div>
+</div>
