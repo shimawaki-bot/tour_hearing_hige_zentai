@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  respondent_name: MyString
+  q1: MyText
+  q1_other: MyText
+  q2: MyText
+  q2_other: MyText
+  q3: MyText
+  q3_other: MyText
+  q4: MyText
+
+two:
+  respondent_name: MyString
+  q1: MyText
+  q1_other: MyText
+  q2: MyText
+  q2_other: MyText
+  q3: MyText
+  q3_other: MyText
+  q4: MyText
