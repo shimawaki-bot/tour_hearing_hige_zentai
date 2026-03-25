@@ -2,13 +2,13 @@ databases:
   - name: tour_hearing_hige_zentai_db
     databaseName: tour_hearing_hige_zentai_production
     user: tour_hearing_hige_zentai
-    plan: free
+    plan: starter
 
 services:
   - type: web
     name: tour-hearing-hige-zentai
     runtime: docker
-    plan: free
+    plan: starter
     dockerfilePath: ./Dockerfile
     envVars:
       - key: DATABASE_URL
