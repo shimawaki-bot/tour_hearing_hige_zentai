@@ -18,18 +18,15 @@
       <!-- Q1 -->
       <div class="q-card">
         <p class="q-label">現在のコンディションについて</p>
-        <p class="q-note">複数選択できます</p>
-        <div class="check-list">
-          <% HigeZentaiSurvey::Q1_OPTIONS.each do |opt| %>
-            <label class="check-item">
-              <%= f.check_box :q1, { multiple: true, class: "check-input" }, opt, nil %>
-              <span class="check-body"><%= opt %></span>
+        <p class="q-note">今現在の、状態を教えて下さい。</p>
+        <p class="q-sublabel">主観的健康度は次のどれになりますか。</p>
+        <div class="radio-row">
+          <% [["絶好調", "excellent"], ["好調", "good"], ["やや良い", "fair"], ["普通", "normal"], ["上記以外", "other"]].each do |label, val| %>
+            <label class="radio-card">
+              <%= f.radio_button :q1, val, class: "radio-input" %>
+              <span class="radio-body"><%= label %></span>
             </label>
           <% end %>
-        </div>
-        <div class="other-field d-none" id="q1-other-field">
-          <%= f.label :q1_other, "その他（具体的に）", class: "q-note mt-2" %>
-          <%= f.text_area :q1_other, class: "form-control form-input", rows: 2, placeholder: "自由に記入してください" %>
         </div>
       </div>
 
@@ -125,6 +122,22 @@
   }
   .check-body:hover { border-color: #5a7a6a; }
 
+  .q-sublabel { font-size: .88rem; font-weight: 600; color: #444; margin: 0 0 .7rem; }
+
+  .radio-row { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .radio-card { display: flex; align-items: center; cursor: pointer; flex: 1 1 auto; }
+  .radio-input { display: none; }
+  .radio-body {
+    width: 100%; text-align: center;
+    padding: .65rem .6rem; border-radius: 10px;
+    border: 1.5px solid #e0e0e0; background: #fafaf8;
+    font-size: .88rem; transition: all .15s; user-select: none; white-space: nowrap;
+  }
+  .radio-input:checked + .radio-body {
+    border-color: #5a7a6a; background: #e6f0eb; color: #2d5a3d; font-weight: 600;
+  }
+  .radio-body:hover { border-color: #5a7a6a; }
+
   .form-input {
     width: 100%; border: 1.5px solid #e0e0e0; border-radius: 10px;
     padding: .75rem 1rem; font-size: .92rem; font-family: inherit;
@@ -154,7 +167,6 @@
       }
     });
   }
-  watchOtherCheckbox('hige_zentai_survey[q1][]', 'q1-other-field');
   watchOtherCheckbox('hige_zentai_survey[q2][]', 'q2-other-field');
   watchOtherCheckbox('hige_zentai_survey[q3][]', 'q3-other-field');
 </script>
