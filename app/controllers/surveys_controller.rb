@@ -6,7 +6,7 @@ class SurveysController < ApplicationController
   def create
     @survey = HigeZentaiSurvey.new(survey_params)
     if @survey.save
-      SurveyMailer.notification(@survey).deliver_later
+      SurveyMailer.notification(@survey).deliver_now
       redirect_to thanks_surveys_path
     else
       render :new, status: :unprocessable_entity
