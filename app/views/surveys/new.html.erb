@@ -28,6 +28,9 @@
             </label>
           <% end %>
         </div>
+        <div class="other-field d-none" id="q1-other-field">
+          <%= f.text_area :q1_other, class: "form-control form-input", rows: 2, placeholder: "現在の状態をご記入ください" %>
+        </div>
       </div>
 
       <!-- Q2 -->
@@ -72,29 +75,11 @@
         </div>
       </div>
 
-      <!-- Q3 -->
-      <div class="q-card">
-        <p class="q-label">本番に向けて、特に良い状態にしておきたい部位はありますか？</p>
-        <p class="q-note">複数選択できます</p>
-        <div class="check-list">
-          <% HigeZentaiSurvey::Q3_OPTIONS.each do |opt| %>
-            <label class="check-item">
-              <%= f.check_box :q3, { multiple: true, class: "check-input" }, opt, nil %>
-              <span class="check-body"><%= opt %></span>
-            </label>
-          <% end %>
-        </div>
-        <div class="other-field d-none" id="q3-other-field">
-          <%= f.label :q3_other, "その他（具体的に）", class: "q-note mt-2" %>
-          <%= f.text_area :q3_other, class: "form-control form-input", rows: 2, placeholder: "自由に記入してください" %>
-        </div>
-      </div>
-
       <!-- Q4 -->
       <div class="q-card">
-        <p class="q-label">フィジカル面で、サポートしてほしいことがあれば教えてください。</p>
-        <p class="q-note">任意・自由記述</p>
-        <%= f.text_area :q4, class: "form-control form-input", rows: 4, placeholder: "どんな小さなことでも、気になることがあれば気軽に書いてください。" %>
+        <p class="q-label">フィジカル・メンタルについて</p>
+        <p class="q-note">守秘義務がありますので、安心してご記載ください。</p>
+        <%= f.text_area :q4, class: "form-control form-input", rows: 4, placeholder: "フィジカル面・メンタル面でサポートしてほしいことをご記入ください" %>
       </div>
 
       <div class="submit-wrap">
@@ -184,6 +169,14 @@
 </style>
 
 <script>
+  // Q1「上記以外」選択時のみ自由記述フィールドを表示
+  document.querySelectorAll('[name="hige_zentai_survey[q1]"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const field = document.getElementById('q1-other-field');
+      field.classList.toggle('d-none', radio.value !== 'other');
+    });
+  });
+
   // Q2 Yes/No → 詳細チェックリストの表示切替
   document.querySelectorAll('[name="hige_zentai_survey[q2_yn]"]').forEach(radio => {
     radio.addEventListener('change', () => {
@@ -192,7 +185,6 @@
         detail.classList.remove('d-none');
       } else {
         detail.classList.add('d-none');
-        // 詳細を閉じたらその他フィールドも閉じる
         document.getElementById('q2-other-field').classList.add('d-none');
       }
     });
@@ -205,16 +197,4 @@
       document.getElementById('q2-other-field').classList.toggle('d-none', !q2OtherCb.checked);
     });
   }
-
-  // Q3「その他」チェック時のみテキストフィールド表示
-  function watchOtherCheckbox(name, fieldId) {
-    document.querySelectorAll(`[name="${name}"]`).forEach(cb => {
-      if (cb.value === 'その他') {
-        cb.addEventListener('change', () => {
-          document.getElementById(fieldId).classList.toggle('d-none', !cb.checked);
-        });
-      }
-    });
-  }
-  watchOtherCheckbox('hige_zentai_survey[q3][]', 'q3-other-field');
 </script>
