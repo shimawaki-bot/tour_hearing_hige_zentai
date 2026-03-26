@@ -32,25 +32,49 @@
 
       <!-- Q2 -->
       <div class="q-card">
-        <p class="q-label">Q2. 今回のツアー中、より良い状態で過ごすために大切にしたいことはありますか？</p>
-        <p class="q-note">複数選択できます</p>
-        <div class="check-list">
-          <% HigeZentaiSurvey::Q2_OPTIONS.each do |opt| %>
-            <label class="check-item">
-              <%= f.check_box :q2, { multiple: true, class: "check-input" }, opt, nil %>
-              <span class="check-body"><%= opt %></span>
-            </label>
-          <% end %>
+        <p class="q-label">今回のツアー中、より良い状態で過ごすために大切にしたいことはありますか？</p>
+        <div class="radio-row" id="q2-yn-row">
+          <label class="radio-card">
+            <%= f.radio_button :q2_yn, "no", class: "radio-input", id: "q2_yn_no", data: { target: "q2-detail" } %>
+            <span class="radio-body">いいえ（普段通りで大丈夫）</span>
+          </label>
+          <label class="radio-card">
+            <%= f.radio_button :q2_yn, "yes", class: "radio-input", id: "q2_yn_yes", data: { target: "q2-detail" } %>
+            <span class="radio-body">はい</span>
+          </label>
         </div>
-        <div class="other-field d-none" id="q2-other-field">
-          <%= f.label :q2_other, "その他（具体的に）", class: "q-note mt-2" %>
-          <%= f.text_area :q2_other, class: "form-control form-input", rows: 2, placeholder: "自由に記入してください" %>
+
+        <div class="yn-detail d-none" id="q2-detail">
+          <p class="q-note" style="margin-top:.8rem;">複数選択できます</p>
+          <div class="check-list">
+            <% [
+              "その時の感覚で判断していきたい",
+              "睡眠",
+              "生活リズム",
+              "食事",
+              "体力向上",
+              "身体ケア"
+            ].each do |opt| %>
+              <label class="check-item">
+                <%= f.check_box :q2, { multiple: true, class: "check-input" }, opt, nil %>
+                <span class="check-body"><%= opt %></span>
+              </label>
+            <% end %>
+            <label class="check-item">
+              <input type="checkbox" name="hige_zentai_survey[q2][]" value="その他" class="check-input" id="q2_other_cb">
+              <span class="check-body">その他</span>
+            </label>
+          </div>
+          <div class="other-field d-none" id="q2-other-field">
+            <%= f.label :q2_other, "その他（具体的に）", class: "q-note mt-2" %>
+            <%= f.text_area :q2_other, class: "form-control form-input", rows: 2, placeholder: "自由に記入してください" %>
+          </div>
         </div>
       </div>
 
       <!-- Q3 -->
       <div class="q-card">
-        <p class="q-label">Q3. 本番に向けて、特に良い状態にしておきたい部位はありますか？</p>
+        <p class="q-label">本番に向けて、特に良い状態にしておきたい部位はありますか？</p>
         <p class="q-note">複数選択できます</p>
         <div class="check-list">
           <% HigeZentaiSurvey::Q3_OPTIONS.each do |opt| %>
@@ -68,7 +92,7 @@
 
       <!-- Q4 -->
       <div class="q-card">
-        <p class="q-label">Q4. フィジカル面で、サポートしてほしいことがあれば教えてください。</p>
+        <p class="q-label">フィジカル面で、サポートしてほしいことがあれば教えてください。</p>
         <p class="q-note">任意・自由記述</p>
         <%= f.text_area :q4, class: "form-control form-input", rows: 4, placeholder: "どんな小さなことでも、気になることがあれば気軽に書いてください。" %>
       </div>
@@ -146,6 +170,8 @@
   .form-input:focus { outline: none; border-color: #5a7a6a; box-shadow: 0 0 0 3px rgba(90,122,106,.15); }
 
   .other-field { margin-top: .6rem; }
+  .yn-detail { margin-top: .4rem; }
+  .d-none { display: none !important; }
 
   .submit-wrap { text-align: center; margin: 1.5rem 0 2rem; }
   .btn-submit {
@@ -158,6 +184,29 @@
 </style>
 
 <script>
+  // Q2 Yes/No → 詳細チェックリストの表示切替
+  document.querySelectorAll('[name="hige_zentai_survey[q2_yn]"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const detail = document.getElementById('q2-detail');
+      if (radio.value === 'yes' && radio.checked) {
+        detail.classList.remove('d-none');
+      } else {
+        detail.classList.add('d-none');
+        // 詳細を閉じたらその他フィールドも閉じる
+        document.getElementById('q2-other-field').classList.add('d-none');
+      }
+    });
+  });
+
+  // Q2「その他」チェック時のみテキストフィールド表示
+  const q2OtherCb = document.getElementById('q2_other_cb');
+  if (q2OtherCb) {
+    q2OtherCb.addEventListener('change', () => {
+      document.getElementById('q2-other-field').classList.toggle('d-none', !q2OtherCb.checked);
+    });
+  }
+
+  // Q3「その他」チェック時のみテキストフィールド表示
   function watchOtherCheckbox(name, fieldId) {
     document.querySelectorAll(`[name="${name}"]`).forEach(cb => {
       if (cb.value === 'その他') {
@@ -167,6 +216,5 @@
       }
     });
   }
-  watchOtherCheckbox('hige_zentai_survey[q2][]', 'q2-other-field');
   watchOtherCheckbox('hige_zentai_survey[q3][]', 'q3-other-field');
 </script>
